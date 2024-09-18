@@ -32,22 +32,26 @@ public abstract class Account implements ITaxa, Serializable {
     }
 
     public void saveAccountToFile() {
-        String filename = agency + "-" + ID + ".ser";
+        String filename = agency + "-" + ID + ".ser";  // Nome do arquivo: AGENCIA-CONTA.ser
         try (ObjectOutputStream write = new ObjectOutputStream(new FileOutputStream(filename))) {
-            write.writeObject(this);
+            write.writeObject(this);  // Serializa o objeto 'Account' e salva no arquivo
             System.out.println("Conta salva com sucesso no arquivo: " + filename);
         } catch (IOException e) {
             System.err.println("Erro ao salvar a conta: " + e.getMessage());
         }
     }
 
-    public static Account loadAccountFromFile(String filename) {
+    // Método para carregar uma conta de um arquivo baseado na agência e número da conta
+    public static Account loadAccountFromFile(String agency, int accountNumber) {
+        String filename = agency + "-" + accountNumber + ".ser";  // Formato do arquivo: AGENCIA-CONTA.ser
         try (ObjectInputStream read = new ObjectInputStream(new FileInputStream(filename))) {
-            return (Account) read.readObject();
+            return (Account) read.readObject();  // Desserializa o arquivo e retorna a conta
+        } catch (FileNotFoundException e) {
+            System.err.println("Erro: Arquivo não encontrado (" + filename + ")");
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Erro ao carregar a conta: " + e.getMessage());
-            return null;
         }
+        return null;  // Retorna null se ocorrer um erro
     }
 
 
