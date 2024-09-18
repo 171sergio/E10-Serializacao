@@ -1,4 +1,5 @@
 package Account;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import Client.*;
@@ -6,8 +7,9 @@ import Exception.*;
 import Operation.*;
 import Taxa.*;
 
-public abstract class Account implements ITaxa {
+public abstract class Account implements ITaxa, Serializable {
 
+    private static final long serialVersionUID = 1L;
     protected Client owner;
     private double balance;
     private int ID;
@@ -27,6 +29,25 @@ public abstract class Account implements ITaxa {
         this.withdrawlimit = withdrawlimit;
         this.agency = agency;
         totAccounts++;
+    }
+
+    public void saveAccountToFile() {
+        String filename = agency + "-" + ID + ".ser";
+        try (ObjectOutputStream write = new ObjectOutputStream(new FileOutputStream(filename))) {
+            write.writeObject(this);
+            System.out.println("Conta salva com sucesso no arquivo: " + filename);
+        } catch (IOException e) {
+            System.err.println("Erro ao salvar a conta: " + e.getMessage());
+        }
+    }
+
+    public static Account loadAccountFromFile(String filename) {
+        try (ObjectInputStream read = new ObjectInputStream(new FileInputStream(filename))) {
+            return (Account) read.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Erro ao carregar a conta: " + e.getMessage());
+            return null;
+        }
     }
 
 
