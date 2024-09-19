@@ -1,11 +1,12 @@
 package Operation;
+import java.io.Serializable;
 import java.util.Date;
 import Account.*;
 import Client.*;
 import Exception.*;
 import Taxa.*;
 
-public abstract class Operation implements ITaxa, Comparable<Operation>{
+public abstract class Operation implements ITaxa, Comparable<Operation>, Serializable {
 
     protected Date date;
 

@@ -1,8 +1,4 @@
-package Account;
-import Client.*;
-import Exception.*;
-import Operation.*;
-import Taxa.*;
+package Exception;
 
 
 public class AccountLimitException extends Exception {

@@ -41,17 +41,22 @@ public abstract class Account implements ITaxa, Serializable {
         }
     }
 
-    // Método para carregar uma conta de um arquivo baseado na agência e número da conta
-    public static Account loadAccountFromFile(String agency, int accountNumber) {
-        String filename = agency + "-" + accountNumber + ".ser";  // Formato do arquivo: AGENCIA-CONTA.ser
-        try (ObjectInputStream read = new ObjectInputStream(new FileInputStream(filename))) {
-            return (Account) read.readObject();  // Desserializa o arquivo e retorna a conta
+    public static Account LoadAccountFromFile(String agency, int id) {
+        Account account = null;
+        String filename = agency + "-" + id + ".ser";
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+            account = (Account) ois.readObject();
+            System.out.println("Account loaded successfully from " + filename);
         } catch (FileNotFoundException e) {
-            System.err.println("Erro: Arquivo não encontrado (" + filename + ")");
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Erro ao carregar a conta: " + e.getMessage());
+            System.err.println("Error: File " + filename + " not found.");
+        } catch (IOException e) {
+            System.err.println("Error: Problem reading the file " + filename);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Error: Account class not found.");
         }
-        return null;  // Retorna null se ocorrer um erro
+
+        return account;
     }
 
 

@@ -5,9 +5,10 @@ import Operation.*;
 import Taxa.*;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
-public abstract class Client{
+public abstract class Client implements Serializable {
     protected String name;
     protected String adress;
     protected Date date;
